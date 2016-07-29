@@ -45,8 +45,28 @@
 
 ```
 
-#### 4: Fraction Calculator
+## Chapter 2: Visualizing Data with Graphs
 
-```Clojure
+### Creating Graphs with ~~Matplotlib~~ incanter
 
+load incanter
+
+```clojure
+(use '(incanter core stats charts io datasets))
+(def x-numbers [1 2 3])
+(def y-numbers [2 4 6])
+(view (xy-plot x-numbers y-numbers))
+```
+marker
+
+```clojure
+(view (xy-plot x-numbers y-numbers :points true))
+```
+
+### Graphing the Average Annual Temperature in New York City
+
+```clojure
+(def nyc-temp [53.9 56.3 56.4 53.4 54.5 55.8 56.8 55.0 55.3 54.0 56.7 56.4 57.3])
+(view (xy-plot (range (count nyc-temp)) nyc-temp  :points true))
+(view (xy-plot (range 2000 2013) nyc-temp  :points true))
 ```
