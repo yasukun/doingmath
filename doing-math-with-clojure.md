@@ -49,15 +49,13 @@
 
 ### Creating Graphs with ~~Matplotlib~~ incanter
 
-load incanter
-
 ```clojure
 (use '(incanter core stats charts io datasets))
 (def x-numbers [1 2 3])
 (def y-numbers [2 4 6])
 (view (xy-plot x-numbers y-numbers))
 ```
-marker
+#### marker
 
 ```clojure
 (view (xy-plot x-numbers y-numbers :points true))
@@ -69,4 +67,47 @@ marker
 (def nyc-temp [53.9 56.3 56.4 53.4 54.5 55.8 56.8 55.0 55.3 54.0 56.7 56.4 57.3])
 (view (xy-plot (range (count nyc-temp)) nyc-temp  :points true))
 (view (xy-plot (range 2000 2013) nyc-temp  :points true))
+```
+
+### Comparing the Monthly Temperature Trends of New York City
+
+```clojure
+(def nyc-temp-2000 [31.3 37.3 47.2 51.0 63.5 71.3 72.3 72.7 66.0 57.0 45.3 31.1])
+(def nyc-temp-2006 [40.9 35.7 43.1 55.7 63.1 71.0 77.9 75.8 66.6 56.2 51.9 43.6])
+(def nyc-temp-2012 [37.3 40.9 50.9 54.8 65.1 71.0 78.8 76.7 68.8 58.0 43.9 41.5])
+(def months (range 1 13))
+(def chart1 (xy-plot months nyc-temp-2000
+                     :title "Average monthly temperature in NYC"
+                     :x-label "Month"
+                     :y-label "Temperature"
+                     :points true :legend true :series-label "2000"))
+(view chart1)
+(add-lines chart1 months nyc-temp-2006 :points true :series-label "2006")
+(add-lines chart1 months nyc-temp-2012 :points true :series-label "2012")
+```
+
+### Customizing the Axes
+
+```clojure
+(def nyc-temp [53.9 56.3 56.4 53.4 54.5 55.8 56.8 55.0 55.3 54.0 56.7 56.4 57.3])
+(def chart (xy-plot (range 2000 2013) nyc-temp  :points true))
+(view chart)
+(set-y-range chart 0 58)
+```
+
+### Newton's Law of Universal Gravitation
+
+```clojure
+(def r (range 100 1001 50))
+(def generate-f-r
+  (let [G (* 6.674 (Math/pow 10 -11))
+        m1 0.5
+        m2 1.5]
+    (map #(/ (* G m1 m2) (Math/pow % 2)) r)))
+(def chart (xy-plot r generate-f-r :points true
+                    :title "Gravitational force and distance"
+                    :x-label "Distance in meters"
+                    :y-label "Gravitational force in newtons'"))
+(set-y-range chart 0 6.0E-15)
+(view chart)
 ```
