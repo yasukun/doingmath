@@ -111,3 +111,49 @@
 (set-y-range chart 0 6.0E-15)
 (view chart)
 ```
+
+### Projectile Motion
+
+```clojure
+(def ^:const g 9.8)
+
+(defn interval-xy [u theta]
+  (let [theta* (Math/toRadians theta)
+        t-flight (/ (* 2 u (Math/sin theta*)) g)]
+    (map (fn [t]
+           [(* u (Math/cos theta*) t)
+            (- (* u (Math/sin theta*) t) (* 0.5 g t t))])
+         (range 0 t-flight 0.001))))
+
+(defn run-trajectory []
+  (println "Enter the initial velocity (m/s): ")
+  (let [u (read-string (read-line))]
+    (println "Enter the angle of projection (degrees): ")
+    (let [theta (read-string (read-line))
+          trajectory (interval-xy u theta)]
+      (view (xy-plot (map first trajectory)
+                     (map second trajectory)
+                     :title "Projectile motion of a ball"
+                     :x-label "x-coordinate"
+                     :y-label "y-coordinate")))))
+```
+
+### Comparing the Trajectory at Different Initial Velocities
+
+```clojure
+(defn diff-trajectory []
+  (let [theta 45
+        u-list [20 40 60]
+        init-data (interval-xy (first u-list) theta)
+        chart (xy-plot (map first init-data)
+                     (map second init-data)
+                     :title "Projectile motion of a ball"
+                     :x-label "x-coordinate"
+                     :y-label "y-coordinate"
+                     :series-label (first u-list)
+                     :legend true)]
+    (doseq [u (rest u-list)]
+        (let [data (interval-xy u theta)]
+          (add-lines chart (map first data) (map second data) :series-label u)))
+    (view chart)))
+```
