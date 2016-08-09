@@ -157,3 +157,22 @@
           (add-lines chart (map first data) (map second data) :series-label u)))
     (view chart)))
 ```
+
+### Programming Challenges
+
+#### #5: Exploring the Relationship Between the Fibonacci Sequence and the Golden Ratio
+
+```clojure
+(defn fibo []
+  (rest (map first (iterate (fn [[a b]] [b (+ a b)]) [0N 1N]))))
+
+(defn draw-fibo [n]
+  (let [ratio (map (fn [[a b]] (double (/ b a))) (partition 2 1 (take (+ n 2) (fibo))))
+        chart (xy-plot (range 0 (count ratio)) (doall ratio)
+                   :title "Ratio between consecutive Fibonacci numbers"
+                   :x-label "No."
+                   :y-label "Ratio")]
+    (set-y-range chart 1.0 2.2)
+    (view chart)))
+
+```
