@@ -2,8 +2,6 @@
 
 ## Chapter 1: Working with Numbers
 
-
-
 ### Programming Challenges
 
 #### 3: Enhanced Unit Converter
@@ -176,3 +174,56 @@
     (view chart)))
 
 ```
+
+## Chapter 2: Describing Data With Statics
+
+### Finding the Mean
+
+```clojure
+(let [donations [100 60 70 90 900 100 200 500 500 503 600 1000 1200]]
+  (println (str "Mean donation over the last " (count donations) " days is " (mean donations))))
+```
+
+### Finding the Mean
+
+```clojure
+(let [donations [100 60 70 900 100 200 500 500 503 600 1000 1200]]
+  (println (str "Median donation over the last " (count donations) " days is " (median donations))))
+```
+
+### Finding the Mode and Creating a Frequency Table
+
+```clojure
+(defn mode [coll]
+  (let [freqs (frequencies coll)
+        occurrences (group-by second freqs)
+        modes (last (sort occurrences))
+        modes (->> modes
+                   second
+                   (map first))]
+    modes))
+
+(let [scores [7 8 9 2 10 9 9 9 9 4 5 6 1 5 6 7 8 6 1 10]
+      mode (mode scores)
+      pr-mode (apply str (interpose "," mode))]
+  (println (str "The mode of the list of numbers is: " pr-mode)))
+
+(use 'clojure.pprint)
+(let [scores [7 8 9 2 10 9 9 9 9 4 5 6 1 5 6 7 8 6 1 10]
+      freq-table (map (fn [[k v]] {:Number k :Frequency v}) (frequencies scores))]
+  (print-table (sort-by :Frequency > freq-table)))
+```
+
+### Finding the Variance and Standard Deviation
+
+```clojure
+(let [donations [100 60 70 900 100 200 500 500 503 600 1000 1200]
+      variance (/ (sum (map #(Math/pow (- % d-mean) 2) donations)) (count donations))]
+  (println (str "The variance of the list of numbers is " variance))
+  (println (str "The standard deviation of the list of numbers is " (Math/sqrt variance))))
+
+```
+
+## Chapter4: Algebra and symbolic math with sympy
+
+### Defining symbols and symbolic operations
